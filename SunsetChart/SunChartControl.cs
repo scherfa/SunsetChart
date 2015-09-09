@@ -136,7 +136,7 @@ namespace SunsetChart
             
             DrawCurrentDay();
             mainChart.ChartAreas[0].AxisY.IntervalType = DateTimeIntervalType.Minutes;
-            mainChart.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            //mainChart.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
             //mainChart.ChartAreas[0].AxisY.
 
             mainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
@@ -148,6 +148,7 @@ namespace SunsetChart
             }
             else
             {
+                mainChart.ChartAreas[0].AxisY.Maximum = 0.95;
                 mainChart.ChartAreas[0].AxisY.Minimum = 0.15;
             }
 
@@ -161,7 +162,8 @@ namespace SunsetChart
 
         private void DrawCurrentDay()
         {
-            if (true)
+            mainChart.ChartAreas[0].AxisX.StripLines.Clear();
+            if (m_showCurrentDay)
             {
                 StripLine stripLineToday = new StripLine
                 {
@@ -171,12 +173,8 @@ namespace SunsetChart
                     TextLineAlignment = StringAlignment.Near,
                     BackColor = CurrentDayColor
                 };
-                mainChart.ChartAreas[0].AxisX.StripLines.Clear();
-                mainChart.ChartAreas[0].AxisY.StripLines.Clear();     
                 mainChart.ChartAreas[0].AxisX.StripLines.Add(stripLineToday);
-                mainChart.ChartAreas[0].AxisY.StripLines.Add(stripLineToday);
             }
-            
         }
 
         private Series AddSunriseSerie(string caption, Color color)
@@ -220,7 +218,6 @@ namespace SunsetChart
                     ForeColor = Color.Black,
                     AllowSelecting = true,
                     AllowMoving = true     
-
                 });
             }
         }
@@ -256,7 +253,6 @@ namespace SunsetChart
         }
 
     
-
         private void menuItemShowSunTime_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
