@@ -35,7 +35,7 @@
             this.sunsetPage = new System.Windows.Forms.TabPage();
             this.riseFallSunChartControl = new SunsetChart.SunChartControl();
             this.hoursPage = new System.Windows.Forms.TabPage();
-            this.timeSunChartControl = new SunsetChart.SunChartControl();
+            this.timeSunChartControl = new SunsetChart.SunChartTimeControl();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileItems = new System.Windows.Forms.ToolStripMenuItem();
             this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,7 @@
             this.helpItems = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripCities = new System.Windows.Forms.ToolStripComboBox();
+            this.aktuelleStundeAnzeigenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sunsetPage.SuspendLayout();
@@ -91,15 +92,17 @@
             // riseFallSunChartControl
             // 
             this.riseFallSunChartControl.CurrentDayColor = System.Drawing.Color.CadetBlue;
+            this.riseFallSunChartControl.CurrentHourColor = System.Drawing.Color.IndianRed;
             this.riseFallSunChartControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.riseFallSunChartControl.Location = new System.Drawing.Point(3, 3);
             this.riseFallSunChartControl.Name = "riseFallSunChartControl";
             cityPosition1.Caption = "";
+            cityPosition1.Country = null;
             cityPosition1.Latitude = 0D;
             cityPosition1.Longitude = 0D;
+            cityPosition1.TimeZone = "W. Europe Standard Time";
             this.riseFallSunChartControl.Position = cityPosition1;
             this.riseFallSunChartControl.ShowCurrentDay = false;
-            this.riseFallSunChartControl.ShowSunTime = false;
             this.riseFallSunChartControl.Size = new System.Drawing.Size(606, 324);
             this.riseFallSunChartControl.SummerWinterTime = false;
             this.riseFallSunChartControl.TabIndex = 0;
@@ -118,12 +121,12 @@
             // timeSunChartControl
             // 
             this.timeSunChartControl.CurrentDayColor = System.Drawing.Color.CadetBlue;
+            this.timeSunChartControl.CurrentHourColor = System.Drawing.Color.IndianRed;
             this.timeSunChartControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.timeSunChartControl.Location = new System.Drawing.Point(3, 3);
             this.timeSunChartControl.Name = "timeSunChartControl";
             this.timeSunChartControl.Position = null;
             this.timeSunChartControl.ShowCurrentDay = false;
-            this.timeSunChartControl.ShowSunTime = false;
             this.timeSunChartControl.Size = new System.Drawing.Size(606, 324);
             this.timeSunChartControl.SummerWinterTime = false;
             this.timeSunChartControl.TabIndex = 0;
@@ -152,7 +155,7 @@
             // beendenToolStripMenuItem
             // 
             this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.beendenToolStripMenuItem.Text = "Beenden";
             this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenMenuItem_Click);
             // 
@@ -161,7 +164,8 @@
             this.extraItems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemSummerTime,
             this.toolStripSeparator1,
-            this.menuItemShowCurrentDay});
+            this.menuItemShowCurrentDay,
+            this.aktuelleStundeAnzeigenToolStripMenuItem});
             this.extraItems.Name = "extraItems";
             this.extraItems.Size = new System.Drawing.Size(49, 23);
             this.extraItems.Text = "Extras";
@@ -209,6 +213,13 @@
             this.toolStripCities.Size = new System.Drawing.Size(121, 23);
             this.toolStripCities.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_SelectedIndexChanged);
             // 
+            // aktuelleStundeAnzeigenToolStripMenuItem
+            // 
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Name = "aktuelleStundeAnzeigenToolStripMenuItem";
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Text = "Aktuelle Stunde anzeigen";
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Click += new System.EventHandler(this.aktuelleStundeAnzeigenToolStripMenuItem_Click);
+            // 
             // SunChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -246,11 +257,12 @@
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage sunsetPage;
         private System.Windows.Forms.TabPage hoursPage;
-        private SunChartControl timeSunChartControl;
+        private SunChartTimeControl timeSunChartControl;
         private SunChartControl riseFallSunChartControl;
         private System.Windows.Forms.ToolStripMenuItem aboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileItems;
         private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aktuelleStundeAnzeigenToolStripMenuItem;
     }
 }
 

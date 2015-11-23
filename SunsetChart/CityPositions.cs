@@ -214,6 +214,7 @@ namespace SunsetChart
 
             // Other Cities
             m_positions.Add(new CityPosition { Country = "BRA", Caption = "Rio de Janeiro", TimeZone = "E. South America Standard Time", Latitude = -22.908333, Longitude = -43.196389 });
+            m_positions.Add(new CityPosition { Country = "IDN", Caption = "Pontianak ", TimeZone = "SE Asia Standard Time", Latitude =  -0.016667, Longitude = 109.333333 });
 
 
             

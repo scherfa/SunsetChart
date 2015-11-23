@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SunsetChart
@@ -28,13 +29,16 @@ namespace SunsetChart
             var index = toolStripCities.Items.IndexOf(m_chartSettings.SelectedCity);
             toolStripCities.SelectedIndex = (index >= 0) ? index : 0;
 
-            timeSunChartControl.ShowSunTime = true;
                       
             timeSunChartControl.ShowCurrentDay = m_chartSettings.ShowCurrentDay;
             riseFallSunChartControl.SummerWinterTime = m_chartSettings.ShowSummerWinterTimeOffset;
             riseFallSunChartControl.ShowCurrentDay = m_chartSettings.ShowCurrentDay;
+            riseFallSunChartControl.ShowCurrentHour = m_chartSettings.ShowCurrentHour;
+            timeSunChartControl.ShowCurrentHour = m_chartSettings.ShowCurrentHour;
             menuItemShowCurrentDay.Checked = m_chartSettings.ShowCurrentDay;
             menuItemSummerTime.Checked = m_chartSettings.ShowSummerWinterTimeOffset;
+            aktuelleStundeAnzeigenToolStripMenuItem.Checked = m_chartSettings.ShowCurrentHour;
+                   
             RenderAll();
         }
 
@@ -76,18 +80,29 @@ namespace SunsetChart
             }
             RenderAll();
         }
+        private void aktuelleStundeAnzeigenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            if (item != null)
+            {
+                item.Checked = !item.Checked;
+                timeSunChartControl.ShowCurrentHour = item.Checked;
+                riseFallSunChartControl.ShowCurrentHour = item.Checked;
+            }
+            RenderAll();
+        }
 
         private void SunChart_FormClosing(object sender, FormClosingEventArgs e)
         {
             m_chartSettings.ShowSummerWinterTimeOffset = menuItemSummerTime.Checked;
             m_chartSettings.ShowCurrentDay = riseFallSunChartControl.ShowCurrentDay;
+            m_chartSettings.ShowCurrentHour = riseFallSunChartControl.ShowCurrentHour;
             if (!string.IsNullOrEmpty(toolStripCities.SelectedText))
             {
                 m_chartSettings.SelectedCity = toolStripCities.SelectedText;    
             }
             
             m_chartSettings.Save();
-
         }
 
         private void aboutMenuItem_Click(object sender, EventArgs e)

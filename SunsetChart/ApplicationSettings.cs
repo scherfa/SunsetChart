@@ -16,7 +16,6 @@ namespace SunsetChart
             }
         }
 
-
         public void Save()
         {
             File.WriteAllText(FullSettingsFilename, (new JavaScriptSerializer()).Serialize(this));

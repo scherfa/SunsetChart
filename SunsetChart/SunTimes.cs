@@ -12,8 +12,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Runtime.Remoting.Messaging;
 
 namespace SunsetChart
 {
@@ -26,8 +26,8 @@ namespace SunsetChart
         private const double mDR = Math.PI / 180;
         private const double mK1 = 15 * mDR * 1.0027379;
 
-        private readonly int[] m_riseTimeArr = new int[2] { 0, 0 };
-        private readonly int[] m_setTimeArr = new int[2] { 0, 0 };
+        private readonly int[] m_riseTimeArr = new int[3] { 0, 0, 0 };
+        private readonly int[] m_setTimeArr = new int[3] { 0, 0, 0 };
         private double m_rizeAzimuth = 0.0;
         private double m_setAzimuth = 0.0;
 
@@ -218,8 +218,8 @@ namespace SunsetChart
                     mVHzArr[0] = mVHzArr[2];
                 }
 
-                riseTime = new DateTime(date.Year, date.Month, date.Day, m_riseTimeArr[0], m_riseTimeArr[1], 0);
-                setTime = new DateTime(date.Year, date.Month, date.Day, m_setTimeArr[0], m_setTimeArr[1], 0);
+                riseTime = new DateTime(date.Year, date.Month, date.Day, m_riseTimeArr[0], m_riseTimeArr[1], m_riseTimeArr[2]);
+                setTime = new DateTime(date.Year, date.Month, date.Day, m_setTimeArr[0], m_setTimeArr[1], m_setTimeArr[2]);
 
                 isSunset = true;
                 isSunrise = true;
@@ -335,7 +335,7 @@ namespace SunsetChart
             double[] ha = new double[3];
             double a, b, c, d, e, s, z;
             double time;
-            int hr, min;
+            int hr, min,sec;
             double az, dz, hz, nz;
 
             ha[0] = t0 - mRightAscentionArr[0] + k * mK1;
@@ -373,8 +373,10 @@ namespace SunsetChart
 
             time = k + e + 1 / (double)120; // time of an event
 
-            hr = (int)Math.Floor(time);
-            min = (int)Math.Floor((time - hr) * 60);
+            TimeSpan timeSpan = TimeSpan.FromHours(time);
+            hr = timeSpan.Hours;
+            min = timeSpan.Minutes;
+            sec = timeSpan.Seconds;
 
             hz = ha[0] + e * (ha[2] - ha[0]);                 // azimuth of the sun at the event
             nz = -Math.Cos(mDecensionArr[1]) * Math.Sin(hz);
@@ -386,6 +388,8 @@ namespace SunsetChart
             {
                 m_riseTimeArr[0] = hr;
                 m_riseTimeArr[1] = min;
+                m_riseTimeArr[2] = sec;
+
                 m_rizeAzimuth = az;
                 m_IsSunrise = true;
             }
@@ -394,6 +398,7 @@ namespace SunsetChart
             {
                 m_setTimeArr[0] = hr;
                 m_setTimeArr[1] = min;
+                m_setTimeArr[2] = sec;
                 m_setAzimuth = az;
                 m_IsSunset = true;
             }

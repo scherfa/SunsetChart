@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Timer = System.Windows.Forms.Timer;
+
 
 namespace SunsetChart
 {
     public partial class SunChartControl : UserControl
     {
-        private double m_dSelectionStart;
-        private double m_dSelectionEnd;
         private bool m_showCurrentDay;
+        private bool m_showCurrentHour;
         private bool m_bSummerWinterTime;
-   
-        private bool m_showSunTime;
 
+        private Timer m_timer;
         public SunChartControl()
         {
             InitializeComponent();
             CurrentDayColor = Color.CadetBlue;
+            CurrentHourColor = Color.IndianRed;
         }
 
         public CityPosition Position { get; set; }
 
         public Color CurrentDayColor { get; set; }
+        public Color CurrentHourColor { get; set; }
+
 
         public bool ShowCurrentDay
         {
@@ -30,16 +34,21 @@ namespace SunsetChart
             set { m_showCurrentDay = value; }
         }
 
-        public bool ShowSunTime
-        {
-            get { return m_showSunTime; }
-            set { m_showSunTime = value; }
-        }
-
         public bool SummerWinterTime
         {
             get { return m_bSummerWinterTime; }
             set { m_bSummerWinterTime = value; }
+        }
+
+        public bool ShowCurrentHour
+        {
+            get { return m_showCurrentHour; }
+            set { m_showCurrentHour = value; }
+        }
+
+        protected Chart MainChart
+        {
+            get { return mainChart; }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -53,48 +62,21 @@ namespace SunsetChart
             }
         }
 
+
         public void Render()
         {
             SunTimes.Instance.SelectedTimeZone = Position.TimeZone;
             RenderFullYearGraph();
-            DrawCurrentDay();
+            DrawCurrent();
         }
 
-        protected void RenderFullYearGraph()
+        protected virtual void RenderFullYearGraph()
         {
             var startOfYear = new DateTime(DateTime.Now.Date.Year, 1, 1);
             var endOfYear = new DateTime(DateTime.Now.Date.Year, 12, 31);
-            endOfYear=  endOfYear.AddDays(1);
+            endOfYear = endOfYear.AddDays(1);
 
-            if (ShowSunTime)
-            {
-                RenderSunTimeGraph(startOfYear, endOfYear);
-            }
-            else
-            {
-                RenderGraph(startOfYear, endOfYear);
-            }
-        }
-
-        private void RenderSunTimeGraph(DateTime startOfYear, DateTime endOfYear)
-        {
-            ClearGraph();
-            var sunTimeSerie = AddSerie("Suntime", "Sonnenstunden", Color.Chocolate);
-            var currentDateTime = startOfYear;
-            while (currentDateTime <= endOfYear)
-            {
-                DateTime sunriseTime = DateTime.MinValue, sunsetTime = DateTime.MinValue;
-                bool isSunset = false, isSunrise = false;
-                SunTimes.Instance.CalculateSunRiseSetTimes(Position.Latitude, Position.Longitude, currentDateTime,
-                    ref sunriseTime, ref sunsetTime, ref isSunrise, ref isSunset);
-
-                TimeSpan timeSpan = sunsetTime - sunriseTime;
-                DateTime date = currentDateTime.Add(timeSpan);
-                sunTimeSerie.Points.AddXY(currentDateTime.Date, date);
-
-                currentDateTime = currentDateTime.AddDays(1);
-            }
-            EnableGridOptions();
+            RenderGraph(startOfYear, endOfYear);
         }
 
         private void RenderGraph(DateTime startOfYear, DateTime endOfYear)
@@ -119,7 +101,7 @@ namespace SunsetChart
             EnableGridOptions();
         }
 
-        private void ClearGraph()
+        protected void ClearGraph()
         {
             mainChart.Series.Clear();
         }
@@ -133,25 +115,18 @@ namespace SunsetChart
 
             mainChart.ChartAreas[0].AxisX.IsMarginVisible = false;
             mainChart.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;
-            
-            DrawCurrentDay();
+
+            DrawCurrent();
             mainChart.ChartAreas[0].AxisY.IntervalType = DateTimeIntervalType.Minutes;
             //mainChart.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
             //mainChart.ChartAreas[0].AxisY.
 
             mainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
             mainChart.ChartAreas[0].AxisY.IsMarginVisible = true;
-            if (ShowSunTime)
-            {
-                mainChart.ChartAreas[0].AxisY.Minimum = 0.30;
-                mainChart.ChartAreas[0].AxisY.Maximum = 0.75;
-            }
-            else
-            {
-                mainChart.ChartAreas[0].AxisY.Maximum = 0.95;
-                mainChart.ChartAreas[0].AxisY.Minimum = 0.15;
-            }
-
+            
+            mainChart.ChartAreas[0].AxisY.Maximum = 0.95;
+            mainChart.ChartAreas[0].AxisY.Minimum = 0.15;
+         
             mainChart.ChartAreas[0].AxisY.ScaleBreakStyle = new AxisScaleBreakStyle
             {
                 BreakLineStyle = BreakLineStyle.Ragged,
@@ -160,21 +135,53 @@ namespace SunsetChart
             };
         }
 
-        private void DrawCurrentDay()
+        protected virtual void DrawCurrentHour()
+        {
+            mainChart.ChartAreas[0].AxisY.StripLines.Clear();
+            if (ShowCurrentHour)
+            {
+                if (m_timer == null)
+                {
+                    m_timer = new Timer { Interval = 10000, Enabled = true };
+                    m_timer.Tick += TimerOnTick;
+                }
+
+                DateTime currentTime = DateTime.Now;
+                StripLine stripLineHour = new StripLine
+                {
+                    IntervalOffsetType = DateTimeIntervalType.Hours,
+                    IntervalOffset = currentTime.Hour / 24.0 + (currentTime.Minute / 1440.0),
+
+                    StripWidth = 0.001,
+                    Text = currentTime.ToShortTimeString(),
+                    TextLineAlignment = StringAlignment.Near,
+                    BackColor = CurrentHourColor
+                };
+                mainChart.ChartAreas[0].AxisY.StripLines.Add(stripLineHour);
+            }
+        }
+
+        protected void DrawCurrentDay()
         {
             mainChart.ChartAreas[0].AxisX.StripLines.Clear();
+           
             if (m_showCurrentDay)
             {
                 StripLine stripLineToday = new StripLine
                 {
                     IntervalOffset = DateTime.Today.ToOADate(),
-                    StripWidth = 1,
+                    StripWidth = .5,
                     Text = DateTime.Today.ToLongDateString(),
                     TextLineAlignment = StringAlignment.Near,
                     BackColor = CurrentDayColor
                 };
                 mainChart.ChartAreas[0].AxisX.StripLines.Add(stripLineToday);
             }
+        }
+
+        private void TimerOnTick(object sender, EventArgs eventArgs)
+        {
+            DrawCurrentHour();
         }
 
         private Series AddSunriseSerie(string caption, Color color)
@@ -187,16 +194,19 @@ namespace SunsetChart
             return AddSerie("Sunset", caption, color);
         }
 
-        private Series AddSerie(string name, string caption, Color color)
+        protected Series AddSerie(string name, string caption, Color color)
         {
-            Series serie = mainChart.Series.Add(name);
+            Series serie = MainChart.Series.Add(name);
             serie.LegendText = caption;
+            
             serie.Color = color;
+            serie.BorderWidth = 2;//?
             serie.ChartType = SeriesChartType.Line;
             serie.XValueType = ChartValueType.Date;
             serie.YValueType = ChartValueType.Time;
             serie.MarkerStyle = MarkerStyle.None;
             serie.MarkerSize = 0;
+            
             serie.ToolTip = "#VALX [#VALY]";
             return serie;
         }
@@ -204,8 +214,6 @@ namespace SunsetChart
         private void chart_MouseDown(object sender, MouseEventArgs e)
         {
             HitTestResult result = mainChart.HitTest(e.X, e.Y);
-             
-
             if (result.ChartElementType == ChartElementType.DataPoint)
             {
                 // actual values
@@ -241,40 +249,31 @@ namespace SunsetChart
                 item.Checked = !item.Checked;
                 ShowCurrentDay = item.Checked;
             }
+            DrawCurrent();
+        }
+
+        protected void DrawCurrent()
+        {
             DrawCurrentDay();
+            DrawCurrentHour();
         }
 
    
 
         private void chart_SelectionRangeChanging(object sender, CursorEventArgs e)
         {
-            m_dSelectionStart = e.NewSelectionStart;
-            m_dSelectionEnd = e.NewSelectionEnd;
-        }
-
-    
-        private void menuItemShowSunTime_Click(object sender, EventArgs e)
-        {
-            ToolStripMenuItem item = sender as ToolStripMenuItem;
-            if (item != null)
-            {
-                item.Checked = !item.Checked;
-                ShowSunTime = item.Checked;
-            }
-            RenderFullYearGraph();
         }
 
         private void chData_MouseMove(object sender, MouseEventArgs e)
         {
             Point mousePoint = new Point(e.X, e.Y);
 
-            mainChart.ChartAreas[0].CursorY.SetCursorPixelPosition(mousePoint, true);
-            mainChart.ChartAreas[0].CursorX.SetCursorPixelPosition(mousePoint, true);
-            mainChart.ChartAreas[0].CursorY.LineColor = Color.RoyalBlue;
-            mainChart.ChartAreas[0].CursorX.LineColor = Color.RoyalBlue;
+            MainChart.ChartAreas[0].CursorY.SetCursorPixelPosition(mousePoint, true);
+            MainChart.ChartAreas[0].CursorX.SetCursorPixelPosition(mousePoint, true);
+            MainChart.ChartAreas[0].CursorY.LineColor = Color.RoyalBlue;
+            MainChart.ChartAreas[0].CursorX.LineColor = Color.RoyalBlue;
         }
 
-        
         private void mainChart_DoubleClick(object sender, EventArgs e)
         {
             mainChart.Annotations.Clear();
