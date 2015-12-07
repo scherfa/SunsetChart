@@ -40,23 +40,19 @@ namespace SunsetChart
             MainChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = false;
             MainChart.ChartAreas[0].CursorY.IsUserSelectionEnabled = false;
             MainChart.ChartAreas[0].CursorX.IntervalType = DateTimeIntervalType.Days;
-            MainChart.ChartAreas[0].CursorY.IntervalType = DateTimeIntervalType.Minutes;
+            MainChart.ChartAreas[0].CursorY.IntervalType = DateTimeIntervalType.Seconds;
 
             MainChart.ChartAreas[0].AxisX.IsMarginVisible = false;
             MainChart.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;
 
             DrawCurrentDay();
-            MainChart.ChartAreas[0].AxisY.IntervalType = DateTimeIntervalType.Minutes;
-            //mainChart.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
-            //mainChart.ChartAreas[0].AxisY.
+            MainChart.ChartAreas[0].AxisY.IntervalType = DateTimeIntervalType.Seconds;
 
             MainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
             MainChart.ChartAreas[0].AxisY.IsMarginVisible = true;
-
            
             MainChart.ChartAreas[0].AxisY.Minimum = 0.30;
-            MainChart.ChartAreas[0].AxisY.Maximum = 0.75;
-           
+            MainChart.ChartAreas[0].AxisY.Maximum = 0.73;
 
             MainChart.ChartAreas[0].AxisY.ScaleBreakStyle = new AxisScaleBreakStyle
             {

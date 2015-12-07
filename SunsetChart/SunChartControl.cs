@@ -118,14 +118,13 @@ namespace SunsetChart
 
             DrawCurrent();
             mainChart.ChartAreas[0].AxisY.IntervalType = DateTimeIntervalType.Minutes;
-            //mainChart.ChartAreas[0].AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
-            //mainChart.ChartAreas[0].AxisY.
 
             mainChart.ChartAreas[0].AxisY.IsStartedFromZero = false;
             mainChart.ChartAreas[0].AxisY.IsMarginVisible = true;
             
             mainChart.ChartAreas[0].AxisY.Maximum = 0.95;
             mainChart.ChartAreas[0].AxisY.Minimum = 0.15;
+            
          
             mainChart.ChartAreas[0].AxisY.ScaleBreakStyle = new AxisScaleBreakStyle
             {
@@ -206,8 +205,8 @@ namespace SunsetChart
             serie.YValueType = ChartValueType.Time;
             serie.MarkerStyle = MarkerStyle.None;
             serie.MarkerSize = 0;
-            
-            serie.ToolTip = "#VALX [#VALY]";
+
+            serie.ToolTip = "#VALX [#VALY{hh:mm:ss}]";
             return serie;
         }
 
@@ -222,7 +221,7 @@ namespace SunsetChart
                     Name = Guid.NewGuid().ToString(),
                     AnchorDataPoint = result.Series.Points[result.PointIndex],
                     AnchorOffsetX = 5,
-                    Text = "X = #VALX\nY = #VALY",
+                    Text = "X = #VALX\nY = #VALY{hh:mm:ss}",
                     ForeColor = Color.Black,
                     AllowSelecting = true,
                     AllowMoving = true     
