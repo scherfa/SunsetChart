@@ -103,6 +103,7 @@ namespace SunsetChart
             m_positions.Add(new CityPosition { Country="GER", Caption = "Konstanz", Latitude = 47.661279, Longitude = 9.172061 });
             m_positions.Add(new CityPosition { Country="GER",Caption = "Pulheim", Latitude = 50.9988374, Longitude = 6.7981391});
             m_positions.Add(new CityPosition { Country="GER",Caption = "Flensburg", Latitude = 54.780395, Longitude = 9.435707});
+            m_positions.Add(new CityPosition { Country="GER",Caption = "Fehmarn", Latitude = 54.478056, Longitude = 11.12});
             /*
             
             Gütersloh 	51.904903 	8.39279
@@ -215,6 +216,7 @@ namespace SunsetChart
             // Other Cities
             m_positions.Add(new CityPosition { Country = "BRA", Caption = "Rio de Janeiro", TimeZone = "E. South America Standard Time", Latitude = -22.908333, Longitude = -43.196389 });
             m_positions.Add(new CityPosition { Country = "IDN", Caption = "Pontianak ", TimeZone = "SE Asia Standard Time", Latitude =  -0.016667, Longitude = 109.333333 });
+            m_positions.Add(new CityPosition { Country = "FJD", Caption = "Fiji ", TimeZone = "Fiji Standard Time", Latitude = -18.0, Longitude = 179.0 });
 
 
             

@@ -82,6 +82,8 @@ namespace SunsetChart
         private void RenderGraph(DateTime startOfYear, DateTime endOfYear)
         {
             ClearGraph();
+            AddTitle();
+           
             var sunsetSerie = AddSunsetSerie("Sonnenuntergang", Color.Crimson);
             var sunriseSerie = AddSunriseSerie("Sonnenaufgang", Color.MediumBlue);
 
@@ -101,6 +103,16 @@ namespace SunsetChart
             EnableGridOptions();
         }
 
+        private void AddTitle()
+        {
+            if (mainChart.Titles.Count > 0) return;
+            Title area1Title = new Title("Aufgang 16:00\nUntergang: 08:00", Docking.Right, new Font("Verdana", 10), Color.Black);
+            area1Title.IsDockedInsideChartArea = true;
+            area1Title.TextOrientation = TextOrientation.Horizontal;
+            area1Title.Alignment = ContentAlignment.MiddleLeft;
+            mainChart.Titles.Add(area1Title);
+        }
+
         protected void ClearGraph()
         {
             mainChart.Series.Clear();
@@ -108,6 +120,7 @@ namespace SunsetChart
 
         private void EnableGridOptions()
         {
+            
             mainChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = false;
             mainChart.ChartAreas[0].CursorY.IsUserSelectionEnabled = false;
             mainChart.ChartAreas[0].CursorX.IntervalType = DateTimeIntervalType.Days;
@@ -196,7 +209,7 @@ namespace SunsetChart
         protected Series AddSerie(string name, string caption, Color color)
         {
             Series serie = MainChart.Series.Add(name);
-            serie.LegendText = caption;
+            serie.LegendText = caption;          
             
             serie.Color = color;
             serie.BorderWidth = 2;//?
@@ -206,7 +219,7 @@ namespace SunsetChart
             serie.MarkerStyle = MarkerStyle.None;
             serie.MarkerSize = 0;
 
-            serie.ToolTip = "#VALX [#VALY{hh:mm:ss}]";
+            serie.ToolTip = "#VALX [#VALY{HH:mm:ss}]";
             return serie;
         }
 
@@ -221,7 +234,7 @@ namespace SunsetChart
                     Name = Guid.NewGuid().ToString(),
                     AnchorDataPoint = result.Series.Points[result.PointIndex],
                     AnchorOffsetX = 5,
-                    Text = "X = #VALX\nY = #VALY{hh:mm:ss}",
+                    Text = "X = #VALX\nY = #VALY{HH:mm:ss}",
                     ForeColor = Color.Black,
                     AllowSelecting = true,
                     AllowMoving = true     
