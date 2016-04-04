@@ -6,6 +6,7 @@ namespace SunsetChart
 {
     public class ApplicationSettings<T> where T : new()
     {
+        private static T m_instance;
         private const string DefaultFilename = "SunChartSettings.jsn";
 
         private static string FullSettingsFilename
@@ -28,13 +29,26 @@ namespace SunsetChart
 
         public static T Load()
         {
-            T t = new T();
+            T t = Instance;
             if (File.Exists(FullSettingsFilename))
             {
-                t = (new JavaScriptSerializer()).Deserialize<T>(File.ReadAllText(FullSettingsFilename));
+                var serializer = new JavaScriptSerializer();                              
+                t = serializer.Deserialize<T>(File.ReadAllText(FullSettingsFilename));
             }
                 
             return t;
+        }        
+
+        public static T Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    m_instance = new T();
+                }
+                return m_instance;
+            }
         }
     }
 }

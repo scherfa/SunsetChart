@@ -43,10 +43,11 @@
             this.menuItemSummerTime = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuItemShowCurrentDay = new System.Windows.Forms.ToolStripMenuItem();
+            this.aktuelleStundeAnzeigenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpItems = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripCities = new System.Windows.Forms.ToolStripComboBox();
-            this.aktuelleStundeAnzeigenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.farbenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sunsetPage.SuspendLayout();
@@ -103,6 +104,7 @@
             cityPosition1.TimeZone = "W. Europe Standard Time";
             this.riseFallSunChartControl.Position = cityPosition1;
             this.riseFallSunChartControl.ShowCurrentDay = false;
+            this.riseFallSunChartControl.ShowCurrentHour = false;
             this.riseFallSunChartControl.Size = new System.Drawing.Size(606, 324);
             this.riseFallSunChartControl.SummerWinterTime = false;
             this.riseFallSunChartControl.TabIndex = 0;
@@ -127,6 +129,7 @@
             this.timeSunChartControl.Name = "timeSunChartControl";
             this.timeSunChartControl.Position = null;
             this.timeSunChartControl.ShowCurrentDay = false;
+            this.timeSunChartControl.ShowCurrentHour = false;
             this.timeSunChartControl.Size = new System.Drawing.Size(606, 324);
             this.timeSunChartControl.SummerWinterTime = false;
             this.timeSunChartControl.TabIndex = 0;
@@ -165,7 +168,8 @@
             this.menuItemSummerTime,
             this.toolStripSeparator1,
             this.menuItemShowCurrentDay,
-            this.aktuelleStundeAnzeigenToolStripMenuItem});
+            this.aktuelleStundeAnzeigenToolStripMenuItem,
+            this.farbenToolStripMenuItem});
             this.extraItems.Name = "extraItems";
             this.extraItems.Size = new System.Drawing.Size(49, 23);
             this.extraItems.Text = "Extras";
@@ -188,6 +192,13 @@
             this.menuItemShowCurrentDay.Size = new System.Drawing.Size(234, 22);
             this.menuItemShowCurrentDay.Text = "Aktuellen Tag anzeigen";
             this.menuItemShowCurrentDay.Click += new System.EventHandler(this.menuItemShowCurrentDay_Click);
+            // 
+            // aktuelleStundeAnzeigenToolStripMenuItem
+            // 
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Name = "aktuelleStundeAnzeigenToolStripMenuItem";
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Text = "Aktuelle Stunde anzeigen";
+            this.aktuelleStundeAnzeigenToolStripMenuItem.Click += new System.EventHandler(this.aktuelleStundeAnzeigenToolStripMenuItem_Click);
             // 
             // helpItems
             // 
@@ -213,12 +224,12 @@
             this.toolStripCities.Size = new System.Drawing.Size(121, 23);
             this.toolStripCities.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox_SelectedIndexChanged);
             // 
-            // aktuelleStundeAnzeigenToolStripMenuItem
+            // farbenToolStripMenuItem
             // 
-            this.aktuelleStundeAnzeigenToolStripMenuItem.Name = "aktuelleStundeAnzeigenToolStripMenuItem";
-            this.aktuelleStundeAnzeigenToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.aktuelleStundeAnzeigenToolStripMenuItem.Text = "Aktuelle Stunde anzeigen";
-            this.aktuelleStundeAnzeigenToolStripMenuItem.Click += new System.EventHandler(this.aktuelleStundeAnzeigenToolStripMenuItem_Click);
+            this.farbenToolStripMenuItem.Name = "farbenToolStripMenuItem";
+            this.farbenToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.farbenToolStripMenuItem.Text = "Farben";
+            this.farbenToolStripMenuItem.Click += new System.EventHandler(this.farbenToolStripMenuItem_Click);
             // 
             // SunChart
             // 
@@ -263,6 +274,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileItems;
         private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aktuelleStundeAnzeigenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem farbenToolStripMenuItem;
     }
 }
 

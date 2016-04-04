@@ -18,8 +18,7 @@ namespace SunsetChart
         public SunChartControl()
         {
             InitializeComponent();
-            CurrentDayColor = Color.CadetBlue;
-            CurrentHourColor = Color.IndianRed;
+       
         }
 
         public CityPosition Position { get; set; }
@@ -62,9 +61,13 @@ namespace SunsetChart
             }
         }
 
+        
+
 
         public void Render()
         {
+            CurrentDayColor = Color.FromArgb(SunsetChartSettings.Instance.CurrentDayColor);
+            CurrentHourColor = Color.FromArgb(SunsetChartSettings.Instance.CurrentHourColor);
             SunTimes.Instance.SelectedTimeZone = Position.TimeZone;
             RenderFullYearGraph();
             DrawCurrent();
@@ -105,9 +108,16 @@ namespace SunsetChart
 
         private void AddTitle()
         {
-            if (mainChart.Titles.Count > 0) return;
-            Title area1Title = new Title("Aufgang 16:00\nUntergang: 08:00", Docking.Right, new Font("Verdana", 10), Color.Black);
+            mainChart.Titles.Clear();
+
+            DateTime sunriseTime = DateTime.MinValue, sunsetTime = DateTime.MinValue;
+            bool isSunset = false, isSunrise = false;
+            SunTimes.Instance.CalculateSunRiseSetTimes(Position.Latitude, Position.Longitude, DateTime.Today, 
+               ref sunriseTime, ref sunsetTime, ref isSunrise, ref isSunset, SummerWinterTime);
+
+            Title area1Title = new Title(String.Format("Heute:\nAufgang:    {0:HH:mm:ss}\nUntergang: {1:HH:mm:ss}",sunriseTime,sunsetTime), Docking.Bottom, new Font("Verdana", 10), Color.Black);
             area1Title.IsDockedInsideChartArea = true;
+            area1Title.DockedToChartArea = mainChart.ChartAreas[0].Name;
             area1Title.TextOrientation = TextOrientation.Horizontal;
             area1Title.Alignment = ContentAlignment.MiddleLeft;
             mainChart.Titles.Add(area1Title);
@@ -212,7 +222,7 @@ namespace SunsetChart
             serie.LegendText = caption;          
             
             serie.Color = color;
-            serie.BorderWidth = 2;//?
+            serie.BorderWidth = 1;//?
             serie.ChartType = SeriesChartType.Line;
             serie.XValueType = ChartValueType.Date;
             serie.YValueType = ChartValueType.Time;

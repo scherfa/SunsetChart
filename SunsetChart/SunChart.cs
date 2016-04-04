@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SunsetChart
@@ -26,9 +26,7 @@ namespace SunsetChart
                 toolStripCities.Items.Add(cityPosition.Caption);
             }
 
-            var index = toolStripCities.Items.IndexOf(m_chartSettings.SelectedCity);
-            toolStripCities.SelectedIndex = (index >= 0) ? index : 0;
-
+            
                       
             timeSunChartControl.ShowCurrentDay = m_chartSettings.ShowCurrentDay;
             riseFallSunChartControl.SummerWinterTime = m_chartSettings.ShowSummerWinterTimeOffset;
@@ -37,9 +35,10 @@ namespace SunsetChart
             timeSunChartControl.ShowCurrentHour = m_chartSettings.ShowCurrentHour;
             menuItemShowCurrentDay.Checked = m_chartSettings.ShowCurrentDay;
             menuItemSummerTime.Checked = m_chartSettings.ShowSummerWinterTimeOffset;
-            aktuelleStundeAnzeigenToolStripMenuItem.Checked = m_chartSettings.ShowCurrentHour;
-                   
-            RenderAll();
+            aktuelleStundeAnzeigenToolStripMenuItem.Checked = m_chartSettings.ShowCurrentHour;         
+
+            var index = toolStripCities.Items.IndexOf(m_chartSettings.SelectedCity);
+            toolStripCities.SelectedIndex = (index >= 0) ? index : 0;                            
         }
 
         private void RenderAll()
@@ -95,8 +94,7 @@ namespace SunsetChart
         private void SunChart_FormClosing(object sender, FormClosingEventArgs e)
         {
             m_chartSettings.ShowSummerWinterTimeOffset = menuItemSummerTime.Checked;
-            m_chartSettings.ShowCurrentDay = riseFallSunChartControl.ShowCurrentDay;
-            m_chartSettings.ShowCurrentHour = riseFallSunChartControl.ShowCurrentHour;
+       
             if (!string.IsNullOrEmpty(toolStripCities.SelectedText))
             {
                 m_chartSettings.SelectedCity = toolStripCities.SelectedText;    
@@ -114,6 +112,12 @@ namespace SunsetChart
         private void beendenMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void farbenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SunChartSettings settings = new SunChartSettings();
+            settings.ShowDialog(this);
         }
     }
 }
