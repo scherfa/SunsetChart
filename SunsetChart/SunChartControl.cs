@@ -23,8 +23,8 @@ namespace SunsetChart
 
         public CityPosition Position { get; set; }
 
-        public Color CurrentDayColor { get; set; }
-        public Color CurrentHourColor { get; set; }
+        public Color CurrentDayColor { get; private set; }
+        public Color CurrentHourColor { get;  private set; }
 
 
         public bool ShowCurrentDay
@@ -55,14 +55,11 @@ namespace SunsetChart
             base.OnLoad(e);
             mainChart.MouseMove += chData_MouseMove;
 
-            if (Position != null && Position.Latitude > 0.0 && Position.Longitude > 0.0)
+            if (Position?.Latitude > 0.0 && Position?.Longitude > 0.0)
             {
                 Render();    
             }
         }
-
-        
-
 
         public void Render()
         {
@@ -106,7 +103,7 @@ namespace SunsetChart
             EnableGridOptions();
         }
 
-        private void AddTitle()
+        protected virtual void AddTitle()
         {
             mainChart.Titles.Clear();
 
@@ -255,12 +252,10 @@ namespace SunsetChart
         private void menuItemSummerTime_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = sender as ToolStripMenuItem;
-            if (item != null)
-            {
-                item.Checked = !item.Checked;
-                SummerWinterTime = item.Checked;
-                RenderFullYearGraph();
-            }
+            if (item == null) return;
+            item.Checked = !item.Checked;
+            SummerWinterTime = item.Checked;
+            RenderFullYearGraph();
         }
 
         private void menuItemShowCurrentDay_Click(object sender, EventArgs e)
@@ -279,8 +274,6 @@ namespace SunsetChart
             DrawCurrentDay();
             DrawCurrentHour();
         }
-
-   
 
         private void chart_SelectionRangeChanging(object sender, CursorEventArgs e)
         {

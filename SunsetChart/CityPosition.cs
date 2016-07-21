@@ -4,16 +4,16 @@ namespace SunsetChart
 {
     public class CityPosition
     {
-        private static Int32 m_id;
+        private static int m_id;
         public CityPosition()
         {
             Id = m_id++;
-            TimeZone = "W. Europe Standard Time";
         }
-        public int Id { get; private set; }
+
+        public int Id { get; }
         public string Caption { get; set; }
         public string Country { get; set; }
-        public string TimeZone { get; set; }
+        public string TimeZone { get; set; } = "W. Europe Standard Time";
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }

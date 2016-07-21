@@ -22,6 +22,7 @@ namespace SunsetChart
         {
             Button colorButton = (Button)sender;
             ColorDialog cdl = new ColorDialog();
+            cdl.FullOpen = true;
             
             cdl.Color = colorButton.BackColor;
             if (cdl.ShowDialog() == DialogResult.OK)
@@ -36,8 +37,6 @@ namespace SunsetChart
                         SunsetChartSettings.Instance.CurrentHourColor = cdl.Color.ToArgb();
                         break;
                 }
-                 
-                
             }
         }
 

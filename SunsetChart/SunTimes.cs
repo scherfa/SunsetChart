@@ -11,9 +11,10 @@
 //  Zacky Pickholz (zacky.pickholz@gmail.com)
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
 using System;
-using System.Collections.Specialized;
 using System.Diagnostics;
+using static System.Math;
 
 namespace SunsetChart
 {
@@ -23,21 +24,21 @@ namespace SunsetChart
 
         private readonly object m_lock = new object();
 
-        private const double mDR = Math.PI / 180;
+        private const double mDR = PI / 180;
         private const double mK1 = 15 * mDR * 1.0027379;
 
         private readonly int[] m_riseTimeArr = new int[3] { 0, 0, 0 };
         private readonly int[] m_setTimeArr = new int[3] { 0, 0, 0 };
-        private double m_rizeAzimuth = 0.0;
-        private double m_setAzimuth = 0.0;
+        private double m_rizeAzimuth;
+        private double m_setAzimuth;
 
         private double[] mSunPositionInSkyArr = { 0.0, 0.0 };
         private double[] mRightAscentionArr = { 0.0, 0.0, 0.0 };
         private double[] mDecensionArr = { 0.0, 0.0, 0.0 };
         private double[] mVHzArr = { 0.0, 0.0, 0.0 };
 
-        private bool m_IsSunrise = false;
-        private bool m_IsSunset = false;
+        private bool m_IsSunrise;
+        private bool m_IsSunset;
 
         private string m_timeZone;
 
@@ -60,9 +61,9 @@ namespace SunsetChart
 
         internal abstract class Coords
         {
-            internal protected int mDegrees = 0;
-            internal protected int mMinutes = 0;
-            internal protected int mSeconds = 0;
+            internal protected int mDegrees;
+            internal protected int mMinutes;
+            internal protected int mSeconds;
 
             public double ToDouble()
             {
@@ -163,15 +164,15 @@ namespace SunsetChart
                 }
                 
                 
-                double zone = -(int)Math.Round(timeZoneInfo.GetUtcOffset(new DateTime(date.Year,1,1)).TotalSeconds / 3600);
+                double zone = -(int)Round(timeZoneInfo.GetUtcOffset(new DateTime(date.Year,1,1)).TotalSeconds / 3600);
                 if (convertSummerTime && timeZoneInfo.SupportsDaylightSavingTime)
                 {
-                    zone = -(int)Math.Round(timeZoneInfo.GetUtcOffset(date).TotalSeconds / 3600);    
+                    zone = -(int)Round(timeZoneInfo.GetUtcOffset(date).TotalSeconds / 3600);    
                 }
                 
                 double jd = GetJulianDay(date) - 2451545;  // Julian day relative to Jan 1.5, 2000
                 
-                if ((Math.Sign(zone) == Math.Sign(lon)) && (Math.Abs(zone) > double.Epsilon))
+                if ((Sign(zone) == Sign(lon)) && (Abs(zone) > double.Epsilon))
                 {
                     Debug.Print("WARNING: time zone and longitude are incompatible!");
                     return false;
@@ -196,7 +197,7 @@ namespace SunsetChart
 
                 // make continuous 
                 if (ra1 < ra0)
-                    ra1 += 2 * Math.PI;
+                    ra1 += 2 * PI;
 
                 // initialize
                 m_IsSunrise = false;
@@ -256,7 +257,7 @@ namespace SunsetChart
         {
             double s = 24110.5 + 8640184.812999999 * jd / 36525 + 86636.6 * z + 86400 * lon;
             s = s / 86400;
-            s = s - Math.Floor(s);
+            s = s - Floor(s);
             return s * 360 * mDR;
         }
 
@@ -276,16 +277,16 @@ namespace SunsetChart
                 month = month + 12;
             }
 
-            double a = Math.Floor((double)year / 100);
+            double a = Floor((double)year / 100);
             double b;
 
             if (gregorian)
-                b = 2 - a + Math.Floor(a / 4);
+                b = 2 - a + Floor(a / 4);
             else
                 b = 0.0;
 
-            double jd = Math.Floor(365.25 * (year + 4716))
-                       + Math.Floor(30.6001 * (month + 1))
+            double jd = Floor(365.25 * (year + 4716))
+                       + Floor(30.6001 * (month + 1))
                        + day + b - 1524.5;
 
             return jd;
@@ -298,35 +299,35 @@ namespace SunsetChart
             double g, lo, s, u, v, w;
 
             lo = 0.779072 + 0.00273790931 * jd;
-            lo = lo - Math.Floor(lo);
-            lo = lo * 2 * Math.PI;
+            lo = lo - Floor(lo);
+            lo = lo * 2 * PI;
 
             g = 0.993126 + 0.0027377785 * jd;
-            g = g - Math.Floor(g);
-            g = g * 2 * Math.PI;
+            g = g - Floor(g);
+            g = g * 2 * PI;
 
-            v = 0.39785 * Math.Sin(lo);
-            v = v - 0.01 * Math.Sin(lo - g);
-            v = v + 0.00333 * Math.Sin(lo + g);
-            v = v - 0.00021 * ct * Math.Sin(lo);
+            v = 0.39785 * Sin(lo);
+            v = v - 0.01 * Sin(lo - g);
+            v = v + 0.00333 * Sin(lo + g);
+            v = v - 0.00021 * ct * Sin(lo);
 
-            u = 1 - 0.03349 * Math.Cos(g);
-            u = u - 0.00014 * Math.Cos(2 * lo);
-            u = u + 0.00008 * Math.Cos(lo);
+            u = 1 - 0.03349 * Cos(g);
+            u = u - 0.00014 * Cos(2 * lo);
+            u = u + 0.00008 * Cos(lo);
 
-            w = -0.0001 - 0.04129 * Math.Sin(2 * lo);
-            w = w + 0.03211 * Math.Sin(g);
-            w = w + 0.00104 * Math.Sin(2 * lo - g);
-            w = w - 0.00035 * Math.Sin(2 * lo + g);
-            w = w - 0.00008 * ct * Math.Sin(g);
+            w = -0.0001 - 0.04129 * Sin(2 * lo);
+            w = w + 0.03211 * Sin(g);
+            w = w + 0.00104 * Sin(2 * lo - g);
+            w = w - 0.00035 * Sin(2 * lo + g);
+            w = w - 0.00008 * ct * Sin(g);
 
             // compute sun's right ascension
-            s = w / Math.Sqrt(u - v * v);
-            mSunPositionInSkyArr[0] = lo + Math.Atan(s / Math.Sqrt(1 - s * s));
+            s = w / Sqrt(u - v * v);
+            mSunPositionInSkyArr[0] = lo + Atan(s / Sqrt(1 - s * s));
 
             // ...and declination 
-            s = v / Math.Sqrt(u);
-            mSunPositionInSkyArr[1] = Math.Atan(s / Math.Sqrt(1 - s * s));
+            s = v / Sqrt(u);
+            mSunPositionInSkyArr[1] = Atan(s / Sqrt(1 - s * s));
         }
 
         // test an hour for an event
@@ -344,19 +345,19 @@ namespace SunsetChart
             ha[1] = (ha[2] + ha[0]) / 2;    // hour angle at half hour
             mDecensionArr[1] = (mDecensionArr[2] + mDecensionArr[0]) / 2;  // declination at half hour
 
-            s = Math.Sin(lat * mDR);
-            c = Math.Cos(lat * mDR);
-            z = Math.Cos(90.833 * mDR);    // refraction + sun semidiameter at horizon
+            s = Sin(lat * mDR);
+            c = Cos(lat * mDR);
+            z = Cos(90.833 * mDR);    // refraction + sun semidiameter at horizon
 
             if (k <= 0)
-                mVHzArr[0] = s * Math.Sin(mDecensionArr[0]) + c * Math.Cos(mDecensionArr[0]) * Math.Cos(ha[0]) - z;
+                mVHzArr[0] = s * Sin(mDecensionArr[0]) + c * Cos(mDecensionArr[0]) * Cos(ha[0]) - z;
 
-            mVHzArr[2] = s * Math.Sin(mDecensionArr[2]) + c * Math.Cos(mDecensionArr[2]) * Math.Cos(ha[2]) - z;
+            mVHzArr[2] = s * Sin(mDecensionArr[2]) + c * Cos(mDecensionArr[2]) * Cos(ha[2]) - z;
 
-            if (Math.Sign(mVHzArr[0]) == Math.Sign(mVHzArr[2]))
+            if (Sign(mVHzArr[0]) == Sign(mVHzArr[2]))
                 return mVHzArr[2];  // no event this hour
 
-            mVHzArr[1] = s * Math.Sin(mDecensionArr[1]) + c * Math.Cos(mDecensionArr[1]) * Math.Cos(ha[1]) - z;
+            mVHzArr[1] = s * Sin(mDecensionArr[1]) + c * Cos(mDecensionArr[1]) * Cos(ha[1]) - z;
 
             a = 2 * mVHzArr[0] - 4 * mVHzArr[1] + 2 * mVHzArr[2];
             b = -3 * mVHzArr[0] + 4 * mVHzArr[1] - mVHzArr[2];
@@ -365,7 +366,7 @@ namespace SunsetChart
             if (d < 0)
                 return mVHzArr[2];  // no event this hour
 
-            d = Math.Sqrt(d);
+            d = Sqrt(d);
             e = (-b + d) / (2 * a);
 
             if ((e > 1) || (e < 0))
@@ -379,9 +380,9 @@ namespace SunsetChart
             sec = timeSpan.Seconds;
 
             hz = ha[0] + e * (ha[2] - ha[0]);                 // azimuth of the sun at the event
-            nz = -Math.Cos(mDecensionArr[1]) * Math.Sin(hz);
-            dz = c * Math.Sin(mDecensionArr[1]) - s * Math.Cos(mDecensionArr[1]) * Math.Cos(hz);
-            az = Math.Atan2(nz, dz) / mDR;
+            nz = -Cos(mDecensionArr[1]) * Sin(hz);
+            dz = c * Sin(mDecensionArr[1]) - s * Cos(mDecensionArr[1]) * Cos(hz);
+            az = Atan2(nz, dz) / mDR;
             if (az < 0) az = az + 360;
 
             if ((mVHzArr[0] < 0) && (mVHzArr[2] > 0))

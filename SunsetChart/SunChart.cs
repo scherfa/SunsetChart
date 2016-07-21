@@ -118,6 +118,7 @@ namespace SunsetChart
         {
             SunChartSettings settings = new SunChartSettings();
             settings.ShowDialog(this);
+            RenderAll();
         }
     }
 }

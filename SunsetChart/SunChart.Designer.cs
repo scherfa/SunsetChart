@@ -91,9 +91,7 @@
             this.sunsetPage.UseVisualStyleBackColor = true;
             // 
             // riseFallSunChartControl
-            // 
-            this.riseFallSunChartControl.CurrentDayColor = System.Drawing.Color.CadetBlue;
-            this.riseFallSunChartControl.CurrentHourColor = System.Drawing.Color.IndianRed;
+            //       
             this.riseFallSunChartControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.riseFallSunChartControl.Location = new System.Drawing.Point(3, 3);
             this.riseFallSunChartControl.Name = "riseFallSunChartControl";
@@ -122,8 +120,6 @@
             // 
             // timeSunChartControl
             // 
-            this.timeSunChartControl.CurrentDayColor = System.Drawing.Color.CadetBlue;
-            this.timeSunChartControl.CurrentHourColor = System.Drawing.Color.IndianRed;
             this.timeSunChartControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.timeSunChartControl.Location = new System.Drawing.Point(3, 3);
             this.timeSunChartControl.Name = "timeSunChartControl";

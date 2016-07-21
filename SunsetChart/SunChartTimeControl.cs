@@ -17,6 +17,7 @@ namespace SunsetChart
         private void RenderSunTimeGraph(DateTime startOfYear, DateTime endOfYear)
         {
             ClearGraph();
+            AddTitle();
             var sunTimeSerie = AddSerie("Suntime", "Sonnenstunden", Color.Chocolate);
             var currentDateTime = startOfYear;
             while (currentDateTime <= endOfYear)
@@ -60,6 +61,24 @@ namespace SunsetChart
                 Enabled = true,
                 LineColor = Color.Gray
             };
+        }
+
+        protected  override void AddTitle()
+        {
+            MainChart.Titles.Clear();
+
+            DateTime sunriseTime = DateTime.MinValue, sunsetTime = DateTime.MinValue;
+            bool isSunset = false, isSunrise = false;
+            SunTimes.Instance.CalculateSunRiseSetTimes(Position.Latitude, Position.Longitude, DateTime.Today,
+               ref sunriseTime, ref sunsetTime, ref isSunrise, ref isSunset, SummerWinterTime);
+            TimeSpan timeSpan = sunsetTime - sunriseTime;
+            DateTime date = DateTime.Today.Add(timeSpan);
+            Title area1Title = new Title(String.Format("Heute:  {0:HH:mm:ss}\nSonnenstunden", date), Docking.Bottom, new Font("Verdana", 10), Color.Black);
+            area1Title.IsDockedInsideChartArea = true;
+            area1Title.DockedToChartArea = MainChart.ChartAreas[0].Name;
+            area1Title.TextOrientation = TextOrientation.Horizontal;
+            area1Title.Alignment = ContentAlignment.MiddleLeft;
+            MainChart.Titles.Add(area1Title);
         }
 
         protected override void DrawCurrentHour()

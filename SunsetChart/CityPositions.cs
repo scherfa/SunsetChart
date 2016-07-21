@@ -8,9 +8,9 @@ namespace SunsetChart
     {
         private readonly List<CityPosition> m_positions = new List<CityPosition>();
 
-        public List<CityPosition> Positions { get { return m_positions; } }
+        public List<CityPosition> Positions => m_positions;
 
-        public CityPositions()
+       public CityPositions()
         {
             m_positions.Add(new CityPosition { Country = "GER", Caption = "Berlin", Latitude = 52.5234051, Longitude = 13.4113999 });
             m_positions.Add(new CityPosition { Country="GER", Caption = "Hamburg", Latitude = 53.5534074, Longitude = 9.9921962 });
@@ -217,9 +217,6 @@ namespace SunsetChart
             m_positions.Add(new CityPosition { Country = "BRA", Caption = "Rio de Janeiro", TimeZone = "E. South America Standard Time", Latitude = -22.908333, Longitude = -43.196389 });
             m_positions.Add(new CityPosition { Country = "IDN", Caption = "Pontianak ", TimeZone = "SE Asia Standard Time", Latitude =  -0.016667, Longitude = 109.333333 });
             m_positions.Add(new CityPosition { Country = "FJD", Caption = "Fiji ", TimeZone = "Fiji Standard Time", Latitude = -18.0, Longitude = 179.0 });
-
-
-            
         }
 
        public CityPosition GetCityPosition(object selectedValue)

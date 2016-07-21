@@ -9,13 +9,7 @@ namespace SunsetChart
         private static T m_instance;
         private const string DefaultFilename = "SunChartSettings.jsn";
 
-        private static string FullSettingsFilename
-        {
-            get
-            {
-                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DefaultFilename);                
-            }
-        }
+        private static string FullSettingsFilename => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DefaultFilename);
 
         public void Save()
         {
