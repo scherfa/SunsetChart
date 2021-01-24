@@ -16,7 +16,7 @@ namespace SunsetChart
 
         private void RenderSunTimeGraph(DateTime startOfYear, DateTime endOfYear)
         {
-            ClearGraph();
+            ClearGraph(); 
             AddTitle();
             var sunTimeSerie = AddSerie("Suntime", "Sonnenstunden", Color.Chocolate);
             var currentDateTime = startOfYear;
@@ -73,7 +73,7 @@ namespace SunsetChart
                ref sunriseTime, ref sunsetTime, ref isSunrise, ref isSunset, SummerWinterTime);
             TimeSpan timeSpan = sunsetTime - sunriseTime;
             DateTime date = DateTime.Today.Add(timeSpan);
-            Title area1Title = new Title(String.Format("Heute:  {0:HH:mm:ss}\nSonnenstunden", date), Docking.Bottom, new Font("Verdana", 10), Color.Black);
+            Title area1Title = new Title(String.Format("Heute:  {0:HH:mm:ss}\nSonnenstunden", date), Docking.Bottom, new Font("Consolas", 10), Color.Black);
             area1Title.IsDockedInsideChartArea = true;
             area1Title.DockedToChartArea = MainChart.ChartAreas[0].Name;
             area1Title.TextOrientation = TextOrientation.Horizontal;

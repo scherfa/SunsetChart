@@ -52,7 +52,7 @@
             this.mainChart.TabIndex = 0;
             this.mainChart.Text = "chart1";
             this.mainChart.SelectionRangeChanging += new System.EventHandler<System.Windows.Forms.DataVisualization.Charting.CursorEventArgs>(this.chart_SelectionRangeChanging);
-            this.mainChart.DoubleClick += new System.EventHandler(this.mainChart_DoubleClick);            
+            this.mainChart.DoubleClick += new System.EventHandler(this.mainChart_DoubleClick);
             this.mainChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.chart_MouseDown);
             // 
             // SunChartControl

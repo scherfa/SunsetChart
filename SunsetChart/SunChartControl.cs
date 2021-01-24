@@ -112,7 +112,7 @@ namespace SunsetChart
             SunTimes.Instance.CalculateSunRiseSetTimes(Position.Latitude, Position.Longitude, DateTime.Today, 
                ref sunriseTime, ref sunsetTime, ref isSunrise, ref isSunset, SummerWinterTime);
 
-            Title area1Title = new Title(String.Format("Heute:\nAufgang:    {0:HH:mm:ss}\nUntergang: {1:HH:mm:ss}",sunriseTime,sunsetTime), Docking.Bottom, new Font("Verdana", 10), Color.Black);
+            Title area1Title = new Title($"Heute:\nAufgang:    {sunriseTime:HH:mm:ss}\nUntergang: {sunsetTime:HH:mm:ss}", Docking.Bottom, new Font("Verdana", 10), Color.Black);
             area1Title.IsDockedInsideChartArea = true;
             area1Title.DockedToChartArea = mainChart.ChartAreas[0].Name;
             area1Title.TextOrientation = TextOrientation.Horizontal;
@@ -131,7 +131,7 @@ namespace SunsetChart
             mainChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = false;
             mainChart.ChartAreas[0].CursorY.IsUserSelectionEnabled = false;
             mainChart.ChartAreas[0].CursorX.IntervalType = DateTimeIntervalType.Days;
-            mainChart.ChartAreas[0].CursorY.IntervalType =DateTimeIntervalType.Minutes;
+            mainChart.ChartAreas[0].CursorY.IntervalType = DateTimeIntervalType.Minutes;
 
             mainChart.ChartAreas[0].AxisX.IsMarginVisible = false;
             mainChart.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;

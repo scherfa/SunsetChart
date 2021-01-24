@@ -51,7 +51,7 @@
             // 
             // currentDayColorButton
             // 
-            this.currentDayColorButton.Location = new System.Drawing.Point(36, 49);
+            this.currentDayColorButton.Location = new System.Drawing.Point(12, 12);
             this.currentDayColorButton.Name = "currentDayColorButton";
             this.currentDayColorButton.Size = new System.Drawing.Size(107, 23);
             this.currentDayColorButton.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // currentHourColorButton
             // 
-            this.currentHourColorButton.Location = new System.Drawing.Point(36, 89);
+            this.currentHourColorButton.Location = new System.Drawing.Point(12, 50);
             this.currentHourColorButton.Name = "currentHourColorButton";
             this.currentHourColorButton.Size = new System.Drawing.Size(107, 23);
             this.currentHourColorButton.TabIndex = 2;
